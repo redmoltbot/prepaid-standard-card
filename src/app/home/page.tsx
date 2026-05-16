@@ -5,6 +5,12 @@ import ActivityLogComp from "@/components/ActivityLog";
 import ThemeToggle from "@/components/ThemeToggle";
 import BarcodeScanner from "@/components/BarcodeScanner";
 import { addLogEntry } from "@/lib/activityLog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Camera, ExternalLink } from "lucide-react";
+
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SupaBarbers";
 
 export default function HomePage() {
   const [cardNum, setCardNum] = useState("");
@@ -88,49 +94,29 @@ export default function HomePage() {
       />
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          SupaBarbers
-        </h1>
+        <h1 className="text-3xl font-bold text-foreground">{APP_NAME}</h1>
         <ThemeToggle />
       </div>
 
       {/* Action Form */}
       <div className="space-y-4 mb-6">
         <div className="relative">
-          <input
+          <Input
             type="text"
             placeholder="Serial Card Number"
             value={cardNum}
             onChange={(e) => setCardNum(e.target.value)}
-            className="w-full text-xl p-4 pr-14 rounded-xl border-2 border-gray-300 focus:border-[#007A4D] focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            className="text-xl p-4 pr-14 h-auto rounded-xl"
           />
           <button
             onClick={() => setIsScannerOpen(true)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#007A4D] active:opacity-70"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[var(--clr-primary)] active:opacity-70"
             aria-label="Scan barcode"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-              />
-            </svg>
+            <Camera className="w-8 h-8" />
           </button>
         </div>
-        <input
+        <Input
           type="number"
           min={1}
           value={stampsStr}
@@ -139,58 +125,65 @@ export default function HomePage() {
             const n = parseInt(stampsStr);
             if (!stampsStr || n < 1 || isNaN(n)) setStampsStr("1");
           }}
-          className="w-full text-xl p-4 rounded-xl border-2 border-gray-300 focus:border-[#007A4D] focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+          className="text-xl p-4 h-auto rounded-xl"
         />
-        <input
+        <Input
           type="text"
           placeholder="Comment (optional)"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full text-xl p-4 rounded-xl border-2 border-gray-300 focus:border-[#007A4D] focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+          className="text-xl p-4 h-auto rounded-xl"
         />
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={() => handleStamp("subtract-stamp")}
             disabled={loading}
-            className="flex-1 py-4 px-6 text-xl font-bold rounded-2xl bg-[#007A4D] text-white disabled:opacity-50 active:scale-95 transition-transform"
+            className="flex-1 py-4 text-xl font-bold rounded-2xl h-auto"
           >
             {loading ? "..." : "✂ Redeem"}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="outline"
             onClick={() => handleStamp("add-stamp")}
             disabled={loading}
-            className="flex-1 py-4 px-6 text-xl font-bold rounded-2xl bg-[#FFB612] text-gray-900 disabled:opacity-50 active:scale-95 transition-transform"
+            className="flex-1 py-4 text-xl font-bold rounded-2xl h-auto"
           >
             {loading ? "..." : "+ Top Up"}
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Stats Row */}
       <div className="flex gap-3 mb-6">
-        <div className="flex-1 bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 text-center">
-          <div className="text-3xl font-bold text-lime-600">
-            {totalCustomers ?? "—"}
-          </div>
-          <div className="text-sm text-gray-500 mt-1">Total Customers</div>
-        </div>
-        <div className="flex-1 bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 text-center">
-          <div className="text-3xl font-bold text-yellow-500">
-            {totalCustomers ?? "—"}
-          </div>
-          <div className="text-sm text-gray-500 mt-1">Cards Issued</div>
-        </div>
+        <Card className="flex-1">
+          <CardContent className="p-4 text-center">
+            <div className="text-3xl font-bold text-[var(--clr-primary)]">
+              {totalCustomers ?? "—"}
+            </div>
+            <div className="text-sm text-muted-foreground mt-1">Total Customers</div>
+          </CardContent>
+        </Card>
+        <Card className="flex-1">
+          <CardContent className="p-4 text-center">
+            <div className="text-3xl font-bold text-[var(--clr-primary)]">
+              {totalCustomers ?? "—"}
+            </div>
+            <div className="text-sm text-muted-foreground mt-1">Cards Issued</div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Telegram Button */}
-      <a
-        href="https://t.me/"
-        target="_blank"
-        rel="noreferrer"
-        className="block w-full py-4 px-6 text-xl font-bold rounded-2xl bg-yellow-400 text-gray-900 text-center mb-6 active:scale-95 transition-transform"
+      <Button
+        variant="outline"
+        className="w-full py-4 text-xl font-bold rounded-2xl h-auto mb-6 gap-2"
+        asChild
       >
-        Connect to Telegram
-      </a>
+        <a href="https://t.me/" target="_blank" rel="noreferrer">
+          <ExternalLink className="w-5 h-5" />
+          Connect to Telegram
+        </a>
+      </Button>
 
       {/* Activity Log */}
       <ActivityLogComp />
