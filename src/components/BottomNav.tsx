@@ -1,34 +1,35 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Home, Users, CreditCard, Search, Bell } from "lucide-react";
 
 const TABS = [
-  { label: "Home", route: "/home", icon: "🏠" },
-  { label: "Customers", route: "/customers", icon: "👥" },
-  { label: "Cards", route: "/cards", icon: "💳" },
-  { label: "Find", route: "/find", icon: "🔍" },
-  { label: "Push", route: "/push", icon: "📣" },
+  { label: "Home", route: "/home", Icon: Home },
+  { label: "Customers", route: "/customers", Icon: Users },
+  { label: "Cards", route: "/cards", Icon: CreditCard },
+  { label: "Find", route: "/find", Icon: Search },
+  { label: "Push", route: "/push", Icon: Bell },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 z-30">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-30">
       <div className="flex">
-        {TABS.map((tab) => {
-          const active = pathname === tab.route;
+        {TABS.map(({ label, route, Icon }) => {
+          const active = pathname === route;
           return (
             <Link
-              key={tab.route}
-              href={tab.route}
+              key={route}
+              href={route}
               className={`flex-1 flex flex-col items-center py-3 transition-colors
                 ${active
-                  ? "text-lime-600 border-t-2 border-lime-500"
-                  : "text-gray-500 dark:text-gray-400"}`}
+                  ? "text-[var(--clr-primary)] border-t-2 border-[var(--clr-primary)] -mt-px"
+                  : "text-muted-foreground"}`}
             >
-              <span className="text-2xl">{tab.icon}</span>
-              <span className="text-xs mt-1 font-medium">{tab.label}</span>
+              <Icon className="w-6 h-6" />
+              <span className="text-xs mt-1 font-medium">{label}</span>
             </Link>
           );
         })}
