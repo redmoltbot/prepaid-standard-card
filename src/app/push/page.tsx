@@ -1,6 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import Toast, { useToast } from "@/components/Toast";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type PushRecord = {
   id: string | number;
@@ -69,64 +73,55 @@ export default function PushPage() {
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
 
-      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+      <h1 className="text-2xl font-bold mb-6 text-foreground">
         Push Notifications
       </h1>
 
       {/* Send Section */}
       <div className="space-y-3 mb-8">
-        <textarea
+        <Textarea
           placeholder="Type your message to all cardholders..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
-          className="w-full text-xl p-4 rounded-xl border-2 border-gray-300 focus:border-lime-500 focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600 resize-none"
+          className="text-xl p-4 rounded-xl resize-none"
         />
-        <button
+        <Button
           onClick={handleSend}
           disabled={sending}
-          className="w-full py-4 px-6 text-xl font-bold rounded-2xl bg-lime-500 text-white disabled:opacity-50 active:scale-95 transition-transform"
+          className="w-full py-4 text-xl font-bold rounded-2xl h-auto"
         >
           {sending ? "Sending..." : "Send to All Cardholders"}
-        </button>
+        </Button>
       </div>
 
       {/* History Section */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+        <h2 className="text-lg font-bold text-foreground">
           Previously Sent
         </h2>
-        <button
-          onClick={fetchHistory}
-          className="py-2 px-4 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold text-sm"
-        >
-          Refresh
-        </button>
+        <Button variant="outline" size="sm" onClick={fetchHistory}>Refresh</Button>
       </div>
 
       {loadingHistory ? (
-        <div className="text-center py-8 text-gray-500">Loading...</div>
+        <div className="text-center py-8 text-muted-foreground">Loading...</div>
       ) : history.length === 0 ? (
-        <div className="text-center py-8 text-gray-400 text-lg">
+        <div className="text-center py-8 text-muted-foreground text-lg">
           No notifications sent yet.
         </div>
       ) : (
         <div className="space-y-3">
           {history.map((p) => (
-            <div
-              key={p.id}
-              className="p-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
-            >
-              <p className="text-base text-gray-900 dark:text-white font-medium">
-                {p.message}
-              </p>
-              <div className="flex justify-between items-center mt-2 text-sm text-gray-400">
-                <span>{formatDateTime(p.createdAt)}</span>
-                {p.status && (
-                  <span className="capitalize">{p.status}</span>
-                )}
-              </div>
-            </div>
+            <Card key={p.id}>
+              <CardContent className="p-4">
+                <p className="text-base text-foreground font-medium">{p.message}</p>
+                <Separator className="my-2" />
+                <div className="flex justify-between items-center text-sm text-muted-foreground">
+                  <span>{formatDateTime(p.createdAt)}</span>
+                  {p.status && <span className="capitalize">{p.status}</span>}
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
