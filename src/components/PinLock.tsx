@@ -1,7 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
 import { Lock } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SupaBarbers";
 const CORRECT_PIN = process.env.NEXT_PUBLIC_PIN ?? "7777";
@@ -61,17 +60,18 @@ export default function PinLock({ onUnlock }: PinLockProps) {
 
       <div className={`flex gap-4 mb-4 ${shake ? "animate-shake" : ""}`}>
         {inputRefs.map((ref, i) => (
-          <Input
+          <input
             key={i}
             ref={ref}
             type="password"
+            inputMode="numeric"
             maxLength={1}
             value={digits[i]}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
-            className={`w-16 h-16 text-center text-3xl font-bold rounded-xl
-              focus:ring-2 focus:ring-[var(--clr-primary)]
-              ${error ? "border-[var(--clr-danger)]" : ""}`}
+            className={`w-16 h-16 text-center text-3xl font-bold rounded-xl border-2 bg-background text-foreground
+              focus:outline-none focus:ring-2 focus:ring-[var(--clr-primary)]
+              ${error ? "border-[var(--clr-danger)]" : "border-border"}`}
             autoFocus={i === 0}
           />
         ))}
