@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getLog } from "@/lib/activityLog";
 import type { ActivityLog } from "@/types";
+import { Badge } from "@/components/ui/badge";
 
 export default function ActivityLogComp() {
   const [log, setLog] = useState<ActivityLog[]>([]);
@@ -12,42 +13,42 @@ export default function ActivityLogComp() {
 
   if (log.length === 0) {
     return (
-      <p className="text-gray-400 text-center py-4">No recent activity.</p>
+      <p className="text-muted-foreground text-center py-4">No recent activity.</p>
     );
   }
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+      <h2 className="text-xl font-bold mb-3 text-foreground">
         Recent Activity
       </h2>
       <div className="space-y-2">
         {log.map((entry) => (
           <div
             key={entry.id}
-            className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800"
+            className="p-3 rounded-xl bg-muted"
           >
             <div className="flex justify-between items-center">
-              <span
-                className={`font-semibold text-base ${
+              <Badge
+                className={
                   entry.action === "add-stamp"
-                    ? "text-lime-600"
-                    : "text-red-500"
-                }`}
+                    ? "bg-[var(--clr-success-bg)] text-[var(--clr-success)] border-0"
+                    : "bg-[var(--clr-danger-bg)] text-[var(--clr-danger)] border-0"
+                }
               >
                 {entry.action === "add-stamp" ? "+" : "-"}
-                {entry.count} stamp{entry.count !== 1 ? "s" : ""}
+                {entry.count} haircut{entry.count !== 1 ? "s" : ""}
                 {entry.action === "subtract-reward" ? " (reward)" : ""}
-              </span>
-              <span className="text-gray-400 text-sm">
+              </Badge>
+              <span className="text-muted-foreground text-sm">
                 {new Date(entry.timestamp).toLocaleTimeString()}
               </span>
             </div>
-            <div className="text-gray-500 text-sm">
+            <div className="text-muted-foreground text-sm">
               Card: {entry.cardNumber}
             </div>
             {entry.comment && (
-              <div className="text-gray-400 text-sm">{entry.comment}</div>
+              <div className="text-muted-foreground text-sm">{entry.comment}</div>
             )}
           </div>
         ))}

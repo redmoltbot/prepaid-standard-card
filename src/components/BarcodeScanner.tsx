@@ -117,14 +117,14 @@ export default function BarcodeScanner({
       </button>
 
       {error && (
-        <div className="absolute bottom-24 left-4 right-4 bg-red-500 text-white p-4 rounded-lg text-center">
+        <div className="absolute bottom-24 left-4 right-4 bg-[var(--clr-danger)] text-white p-4 rounded-lg text-center">
           {error}
         </div>
       )}
 
       <button
         onClick={onClose}
-        className="bg-white text-gray-900 py-4 text-xl font-bold active:scale-95 transition-transform"
+        className="bg-card text-foreground py-4 text-xl font-bold active:scale-95 transition-transform"
       >
         Cancel
       </button>

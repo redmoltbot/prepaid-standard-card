@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Toast, { useToast } from "@/components/Toast";
 import { addLogEntry } from "@/lib/activityLog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface StampPanelProps {
   cardId: string;
@@ -56,7 +58,7 @@ export default function StampPanel({ cardId, onSuccess }: StampPanelProps) {
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
-      <input
+      <Input
         type="number"
         min={1}
         value={stampsStr}
@@ -65,30 +67,31 @@ export default function StampPanel({ cardId, onSuccess }: StampPanelProps) {
           const n = parseInt(stampsStr);
           if (!stampsStr || n < 1 || isNaN(n)) setStampsStr("1");
         }}
-        className="w-full text-xl p-3 rounded-xl border-2 border-gray-300 focus:border-[#007A4D] focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+        className="text-xl p-3 h-auto rounded-xl"
       />
-      <input
+      <Input
         type="text"
         placeholder="Comment (optional)"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="w-full text-lg p-3 rounded-xl border-2 border-gray-300 focus:border-[#007A4D] focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+        className="text-lg p-3 h-auto rounded-xl"
       />
       <div className="flex gap-3">
-        <button
+        <Button
           onClick={() => handleAction("subtract-stamp")}
           disabled={loading}
-          className="flex-1 py-4 text-xl font-bold rounded-2xl bg-[#007A4D] text-white disabled:opacity-50 active:scale-95 transition-transform"
+          className="flex-1 py-4 text-xl font-bold rounded-2xl h-auto"
         >
           {loading ? "..." : "✂ Redeem"}
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
           onClick={() => handleAction("add-stamp")}
           disabled={loading}
-          className="flex-1 py-4 text-xl font-bold rounded-2xl bg-[#FFB612] text-gray-900 disabled:opacity-50 active:scale-95 transition-transform"
+          className="flex-1 py-4 text-xl font-bold rounded-2xl h-auto"
         >
           {loading ? "..." : "+ Top Up"}
-        </button>
+        </Button>
       </div>
     </div>
   );
