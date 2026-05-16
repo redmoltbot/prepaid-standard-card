@@ -1,11 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
+import { Lock } from "lucide-react";
+import { Input } from "@/components/ui/input";
+
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "SupaBarbers";
+const CORRECT_PIN = process.env.NEXT_PUBLIC_PIN ?? "7777";
 
 interface PinLockProps {
   onUnlock: () => void;
 }
-
-const CORRECT_PIN = "7777";
 
 export default function PinLock({ onUnlock }: PinLockProps) {
   const [digits, setDigits] = useState(["", "", "", ""]);
@@ -51,16 +54,14 @@ export default function PinLock({ onUnlock }: PinLockProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-900 p-8">
-      <div className="text-6xl mb-4">🔒</div>
-      <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-        SupaBarbers
-      </h1>
-      <p className="text-lg text-gray-500 mb-8">Enter PIN to continue</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-8">
+      <Lock className="w-16 h-16 text-[var(--clr-primary)] mb-4" />
+      <h1 className="text-3xl font-bold mb-2 text-foreground">{APP_NAME}</h1>
+      <p className="text-lg text-muted-foreground mb-8">Enter PIN to continue</p>
 
       <div className={`flex gap-4 mb-4 ${shake ? "animate-shake" : ""}`}>
         {inputRefs.map((ref, i) => (
-          <input
+          <Input
             key={i}
             ref={ref}
             type="password"
@@ -68,17 +69,16 @@ export default function PinLock({ onUnlock }: PinLockProps) {
             value={digits[i]}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
-            className={`w-16 h-16 text-center text-3xl font-bold rounded-xl border-2
-              bg-gray-50 dark:bg-gray-800 dark:text-white
-              focus:outline-none focus:ring-2 focus:ring-lime-400
-              ${error ? "border-red-500" : "border-gray-300 focus:border-lime-500"}`}
+            className={`w-16 h-16 text-center text-3xl font-bold rounded-xl
+              focus:ring-2 focus:ring-[var(--clr-primary)]
+              ${error ? "border-[var(--clr-danger)]" : ""}`}
             autoFocus={i === 0}
           />
         ))}
       </div>
 
       {error && (
-        <p className="text-red-500 text-lg font-medium">Incorrect PIN</p>
+        <p className="text-[var(--clr-danger)] text-lg font-medium">Incorrect PIN</p>
       )}
     </div>
   );
