@@ -2,14 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  font-size: 18px;
+/* ── Brand tokens (light) ── */
+:root {
+  --clr-primary:        #378e2f;
+  --clr-primary-hover:  #158106;
+  --clr-primary-muted:  #7db477;
+  --clr-primary-fg:     #ffffff;
+  --clr-bg:             #f5f7f5;
+  --clr-surface:        #ffffff;
+  --clr-surface-raised: #eef2ee;
+  --clr-border:         #d4dbd4;
+  --clr-overlay:        rgba(0,0,0,0.08);
+  --clr-text:           #1a261a;
+  --clr-text-muted:     #52635f;
+  --clr-text-faint:     #8a9a8a;
+  --clr-success:        #22946e;
+  --clr-success-bg:     #eaf5f1;
+  --clr-warning:        #a87a2a;
+  --clr-warning-bg:     #fdf4e7;
+  --clr-danger:         #9c2121;
+  --clr-danger-bg:      #fdecea;
+  --clr-info:           #21498a;
+  --clr-info-bg:        #eaf0fa;
 }
 
-body {
-  @apply bg-white text-gray-900;
+/* ── Brand tokens (dark) ── */
+.dark {
+  --clr-primary:        #67a760;
+  --clr-primary-hover:  #7db477;
+  --clr-primary-muted:  #378e2f;
+  --clr-primary-fg:     #0d1a0d;
+  --clr-bg:             #1a1f1a;
+  --clr-surface:        #242b24;
+  --clr-surface-raised: #2f382f;
+  --clr-border:         #3c453c;
+  --clr-overlay:        rgba(0,0,0,0.3);
+  --clr-text:           #e8ede8;
+  --clr-text-muted:     #9aaa9a;
+  --clr-text-faint:     #687268;
+  --clr-success:        #5ba989;
+  --clr-success-bg:     #1a2e27;
+  --clr-warning:        #ba945a;
+  --clr-warning-bg:     #2e2010;
+  --clr-danger:         #b4544c;
+  --clr-danger-bg:      #2e1212;
+  --clr-info:           #4b6ca2;
+  --clr-info-bg:        #101828;
 }
 
-.dark body {
-  @apply bg-gray-900 text-white;
+@layer base {
+  .theme {
+    --font-heading: var(--font-sans);
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  }
+  :root {
+    --background:           var(--clr-bg);
+    --foreground:           var(--clr-text);
+    --card:                 var(--clr-surface);
+    --card-foreground:      var(--clr-text);
+    --popover:              var(--clr-surface-raised);
+    --popover-foreground:   var(--clr-text);
+    --primary:              var(--clr-primary);
+    --primary-foreground:   var(--clr-primary-fg);
+    --secondary:            var(--clr-surface-raised);
+    --secondary-foreground: var(--clr-text);
+    --muted:                var(--clr-surface-raised);
+    --muted-foreground:     var(--clr-text-muted);
+    --accent:               var(--clr-surface-raised);
+    --accent-foreground:    var(--clr-text);
+    --destructive:          var(--clr-danger);
+    --border:               var(--clr-border);
+    --input:                var(--clr-border);
+    --ring:                 var(--clr-primary);
+    --radius: 0.625rem;
+    --sidebar:                    var(--clr-surface);
+    --sidebar-foreground:         var(--clr-text);
+    --sidebar-primary:            var(--clr-primary);
+    --sidebar-primary-foreground: var(--clr-primary-fg);
+    --sidebar-accent:             var(--clr-surface-raised);
+    --sidebar-accent-foreground:  var(--clr-text);
+    --sidebar-border:             var(--clr-border);
+    --sidebar-ring:               var(--clr-primary);
+  }
+  .dark {}
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    font-size: 18px;
+  }
 }
