@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import CustomerModal from "@/components/CustomerModal";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CardRow = {
   id: string;
@@ -49,53 +52,54 @@ export default function CustomersPage() {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           Customers
         </h1>
-        <button
-          onClick={fetchCards}
-          className="py-2 px-4 rounded-xl bg-lime-500 text-white font-bold text-base"
-        >
+        <Button size="sm" onClick={fetchCards}>
           Refresh
-        </button>
+        </Button>
       </div>
 
       {loading ? (
-        <div className="text-center py-16 text-xl text-gray-500">
-          Loading...
+        <div className="space-y-2">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+          ))}
         </div>
       ) : (
         <>
           <div className="space-y-2">
             {paged.map((c) => (
-              <button
+              <Card
                 key={c.id}
                 onClick={() => setSelected(c.id)}
-                className="w-full text-left p-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 active:scale-95 transition-transform"
+                className="cursor-pointer active:scale-95 transition-transform"
               >
-                <div className="flex justify-between items-start">
-                  <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {c.customer.firstName} {c.customer.surname || ""}
-                  </span>
-                  <span className="text-sm text-gray-400 ml-2 shrink-0">
-                    {formatDate(c.createdAt)}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 mt-1 text-sm text-gray-500 flex-wrap">
-                  <span className="font-mono text-lime-600 font-medium">{c.id}</span>
-                  <span>·</span>
-                  <span>{c.customer.phone || "—"}</span>
-                  {c.customer.email && (
-                    <>
-                      <span>·</span>
-                      <span className="truncate">{c.customer.email}</span>
-                    </>
-                  )}
-                </div>
-              </button>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <span className="text-lg font-semibold text-foreground">
+                      {c.customer.firstName} {c.customer.surname || ""}
+                    </span>
+                    <span className="text-sm text-muted-foreground ml-2 shrink-0">
+                      {formatDate(c.createdAt)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground flex-wrap">
+                    <span className="font-mono text-[var(--clr-primary)] font-medium">{c.id}</span>
+                    <span>·</span>
+                    <span>{c.customer.phone || "—"}</span>
+                    {c.customer.email && (
+                      <>
+                        <span>·</span>
+                        <span className="truncate">{c.customer.email}</span>
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
             {cards.length === 0 && (
-              <div className="text-center py-12 text-gray-500 text-lg">
+              <div className="text-center py-12 text-muted-foreground text-lg">
                 No customers found.
               </div>
             )}
@@ -103,23 +107,13 @@ export default function CustomersPage() {
 
           {totalPages > 1 && (
             <div className="flex justify-center gap-3 mt-6">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage((p) => p - 1)}
-                className="py-2 px-5 rounded-xl bg-gray-200 dark:bg-gray-700 dark:text-white font-bold disabled:opacity-40"
-              >
+              <Button variant="outline" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                 ← Prev
-              </button>
-              <span className="py-2 px-4 text-gray-600 dark:text-gray-300">
-                {page} / {totalPages}
-              </span>
-              <button
-                disabled={page === totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className="py-2 px-5 rounded-xl bg-gray-200 dark:bg-gray-700 dark:text-white font-bold disabled:opacity-40"
-              >
+              </Button>
+              <span className="py-2 px-4 text-muted-foreground">{page} / {totalPages}</span>
+              <Button variant="outline" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
                 Next →
-              </button>
+              </Button>
             </div>
           )}
         </>
