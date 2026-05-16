@@ -174,16 +174,15 @@ export default function HomePage() {
       </div>
 
       {/* Telegram Button */}
-      <Button
-        variant="outline"
-        className="w-full py-4 text-xl font-bold rounded-2xl h-auto mb-6 gap-2"
-        asChild
+      <a
+        href="https://t.me/"
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center justify-center gap-2 w-full py-4 text-xl font-bold rounded-2xl mb-6 border border-border bg-card text-foreground active:scale-95 transition-transform"
       >
-        <a href="https://t.me/" target="_blank" rel="noreferrer">
-          <ExternalLink className="w-5 h-5" />
-          Connect to Telegram
-        </a>
-      </Button>
+        <ExternalLink className="w-5 h-5" />
+        Connect to Telegram
+      </a>
 
       {/* Activity Log */}
       <ActivityLogComp />
