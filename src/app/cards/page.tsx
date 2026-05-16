@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import CustomerModal from "@/components/CustomerModal";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CardRow = {
   id: string;
@@ -106,143 +112,143 @@ export default function CardsPage() {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           Cards
         </h1>
         <div className="flex gap-2">
-          <button
-            onClick={() => exportCSV(filtered)}
-            className="py-2 px-4 rounded-xl bg-blue-500 text-white font-bold text-base"
-          >
+          <Button variant="outline" size="sm" onClick={() => exportCSV(filtered)}>
             Export CSV
-          </button>
-          <button
-            onClick={fetchCards}
-            className="py-2 px-4 rounded-xl bg-lime-500 text-white font-bold text-base"
-          >
+          </Button>
+          <Button size="sm" onClick={fetchCards}>
             Refresh
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="mb-4 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 space-y-3">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-              Not active since
-            </label>
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 text-sm"
-            />
+      <Card className="mb-4">
+        <CardContent className="p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1">
+              <Label className="block text-xs font-medium mb-1">
+                Not active since
+              </Label>
+              <Input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="w-full rounded-xl"
+              />
+            </div>
+            <div className="flex-1">
+              <Label className="block text-xs font-medium mb-1">
+                Min. Haircuts Remaining
+              </Label>
+              <Input
+                type="number"
+                min="0"
+                placeholder="0"
+                value={minStamps}
+                onChange={(e) => setMinStamps(e.target.value)}
+                className="w-full rounded-xl"
+              />
+            </div>
+            <div className="flex-1">
+              <Label className="block text-xs font-medium mb-1">
+                Card Status
+              </Label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as "" | "installed" | "not_installed")}
+                className="w-full rounded-xl border border-border bg-card text-foreground px-3 py-2 text-sm"
+              >
+                <option value="">All</option>
+                <option value="installed">Installed</option>
+                <option value="not_installed">Not Installed</option>
+              </select>
+            </div>
           </div>
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-              Min. Haircuts Remaining
-            </label>
-            <input
-              type="number"
-              min="0"
-              placeholder="0"
-              value={minStamps}
-              onChange={(e) => setMinStamps(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 text-sm"
-            />
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              Showing {filtered.length} of {cards.length} cards
+            </span>
+            {hasFilters && (
+              <button
+                onClick={clearFilters}
+                className="text-sm text-[var(--clr-danger)] font-medium"
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-              Card Status
-            </label>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as "" | "installed" | "not_installed")}
-              className="w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 text-sm"
-            >
-              <option value="">All</option>
-              <option value="installed">Installed</option>
-              <option value="not_installed">Not Installed</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Showing {filtered.length} of {cards.length} cards
-          </span>
-          {hasFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-sm text-red-500 font-medium hover:text-red-600"
-            >
-              Clear Filters
-            </button>
-          )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {loading ? (
-        <div className="text-center py-16 text-xl text-gray-500">
-          Loading...
+        <div className="space-y-3">
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
         </div>
       ) : (
         <div className="space-y-3">
           {filtered.map((c) => (
-            <button
+            <Card
               key={c.id}
               onClick={() => setSelected(c.id)}
-              className="w-full text-left p-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 active:scale-95 transition-transform"
+              className="cursor-pointer active:scale-95 transition-transform"
             >
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {c.customer.firstName} {c.customer.surname || ""}
-                  </div>
-                  <div className="text-base text-gray-500 mt-0.5">
-                    {c.customer.phone || "No phone"}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-mono text-lime-600 text-base font-medium">
-                    {c.id}
-                  </div>
-                  <div className="text-sm text-gray-400 mt-0.5">
-                    Last active: {formatDate(c.updatedAt)}
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                <div>
-                  <span className="text-gray-400">Haircuts remaining: </span>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">
-                    {c.balance?.currentNumberOfUses ?? 0}
-                  </span>
-                </div>
-                {c.device && (
+              <CardContent className="p-4">
+                <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-gray-400">Device: </span>
-                    <span className="text-gray-700 dark:text-gray-300">{c.device}</span>
+                    <div className="text-lg font-semibold text-foreground">
+                      {c.customer.firstName} {c.customer.surname || ""}
+                    </div>
+                    <div className="text-base text-muted-foreground mt-0.5">
+                      {c.customer.phone || "No phone"}
+                    </div>
                   </div>
-                )}
-                {c.status && (
+                  <div className="text-right">
+                    <div className="font-mono text-[var(--clr-primary)] text-base font-medium">
+                      {c.id}
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-0.5">
+                      Last active: {formatDate(c.updatedAt)}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-border flex flex-wrap gap-x-4 gap-y-1 text-sm">
                   <div>
-                    <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
-                        c.status === "installed"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                          : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                      }`}
-                    >
-                      {c.status === "not_installed" ? "Not Installed" : c.status}
+                    <span className="text-muted-foreground">Haircuts remaining: </span>
+                    <span className="text-foreground font-medium">
+                      {c.balance?.currentNumberOfUses ?? 0}
                     </span>
                   </div>
-                )}
-              </div>
-            </button>
+                  {c.device && (
+                    <div>
+                      <span className="text-muted-foreground">Device: </span>
+                      <span className="text-foreground">{c.device}</span>
+                    </div>
+                  )}
+                  {c.status && (
+                    <Badge
+                      className={
+                        c.status === "installed"
+                          ? "bg-[var(--clr-success-bg)] text-[var(--clr-success)] border-0"
+                          : "bg-muted text-muted-foreground border-0"
+                      }
+                    >
+                      {c.status === "not_installed" ? "Not Installed" : c.status}
+                    </Badge>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           ))}
           {filtered.length === 0 && (
-            <div className="text-center py-12 text-gray-500 text-lg">
+            <div className="text-center py-12 text-muted-foreground text-lg">
               {cards.length === 0 ? "No cards found." : "No cards match the current filters."}
             </div>
           )}
