@@ -17,6 +17,8 @@ export type CardInfo = {
   rewards: number
   comment: string | null
   downloadUrl: string | null
+  installLink: string | null
+  shareLink: string | null
   customer: Customer
 }
 

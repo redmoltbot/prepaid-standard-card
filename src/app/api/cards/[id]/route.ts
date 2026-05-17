@@ -21,6 +21,8 @@ export async function GET(
       rewards: card.balance?.numberRewardsUnused ?? 0,
       comment: null,
       downloadUrl: card.installLink || card.shareLink || null,
+      installLink: card.installLink ?? null,
+      shareLink: card.shareLink ?? null,
       customer: {
         id: card.customer.id,
         firstName: card.customer.firstName,
