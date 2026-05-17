@@ -20,6 +20,8 @@ type CardRow = {
     stampsBeforeReward: number;
   } | null;
   customerId: string | null;
+  installLink: string | null;
+  shareLink: string | null;
   customer: {
     firstName: string;
     surname: string | null;
@@ -36,7 +38,7 @@ function formatDate(dateStr: string): string {
 
 function exportCSV(cards: CardRow[]) {
   const today = new Date().toISOString().slice(0, 10);
-  const headers = ["Card ID", "Customer ID", "Customer Name", "Phone", "Email", "Last Active", "Haircuts Remaining", "Status", "Device"];
+  const headers = ["Card ID", "Customer ID", "Customer Name", "Phone", "Email", "Last Active", "Haircuts Remaining", "Status", "Device", "Install Link", "Share Link"];
   const rows = cards.map((c) => [
     c.id,
     c.customerId ?? "",
@@ -47,6 +49,8 @@ function exportCSV(cards: CardRow[]) {
     String(c.balance?.currentNumberOfUses ?? 0),
     c.status ?? "",
     c.device ?? "",
+    c.installLink ?? "",
+    c.shareLink ?? "",
   ]);
   const csv = [headers, ...rows]
     .map((row) => row.map((v) => `"${v.replace(/"/g, '""')}"`).join(","))
