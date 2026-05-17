@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const res = await dwFetch("/customers", {
       method: "POST",
-      body: JSON.stringify({ ...body, templateId: 1094541 }),
+      body: JSON.stringify({ ...body, templateId: Number(process.env.TEMPLATE_ID) }),
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

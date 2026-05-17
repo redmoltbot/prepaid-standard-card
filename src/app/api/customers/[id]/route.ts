@@ -22,7 +22,7 @@ export async function PATCH(
     const body = await request.json();
     const res = await dwFetch(`/customers/${params.id}`, {
       method: "PATCH",
-      body: JSON.stringify({ ...body, templateId: 1094541 }),
+      body: JSON.stringify({ ...body, templateId: Number(process.env.TEMPLATE_ID) }),
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

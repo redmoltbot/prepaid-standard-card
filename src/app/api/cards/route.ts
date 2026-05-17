@@ -3,9 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  if (!searchParams.has("templateId")) {
-    searchParams.set("templateId", "1094541");
-  }
+  searchParams.set("templateId", process.env.TEMPLATE_ID!);
   try {
     const res = await dwFetch(`/cards?${searchParams.toString()}`);
     const data = await res.json();

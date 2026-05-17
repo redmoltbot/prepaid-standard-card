@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  searchParams.set("templateId", "1094541");
+  searchParams.set("templateId", process.env.TEMPLATE_ID!);
   try {
     const res = await dwFetch(`/pushes?${searchParams.toString()}`);
     const data = await res.json();
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       body: JSON.stringify({
         message: body.message ?? "",
-        templateId: 1094541,
+        templateId: Number(process.env.TEMPLATE_ID),
         cardId: body.cardId ?? null,
         scheduledAt: body.scheduledAt ?? null,
       }),
